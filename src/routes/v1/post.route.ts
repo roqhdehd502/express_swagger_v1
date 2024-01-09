@@ -9,10 +9,10 @@ import {
 
 const router = express.Router();
 
-router.get("/query/post", getAllPosts);
-router.get("/query/post/:seq", getPost);
-router.post("/command/post", createPost);
-router.put("/command/post", updatePost);
-router.delete("/command/post", deletePost);
+router.get("/post/query", getAllPosts);
+router.get("/post/query/:seq", getPost);
+router.post("/post/command", createPost);
+router.put("/post/command", updatePost);
+router.delete("/post/command", deletePost);
 
 export default router;

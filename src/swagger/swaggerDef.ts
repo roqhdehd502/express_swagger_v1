@@ -14,7 +14,15 @@ const swaggerDef = {
   servers: [
     {
       url: `http://localhost:${PORT}/v1`,
+      description: "로컬계",
+    },
+    {
+      url: "https://express-n0qh4jbcr-roqhdehd502.vercel.app/v1",
       description: "테스트계",
+    },
+    {
+      url: "https://express-n0qh4jbcr-roqhdehd502.vercel.app/v1",
+      description: "운영계",
     },
   ],
   definitions: {

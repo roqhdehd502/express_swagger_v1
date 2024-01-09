@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
+import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import xss from "xss-clean";
 import route from "@/routes/v1";
@@ -35,11 +36,16 @@ app.use(compression());
 app.use(cors());
 app.options("*", cors());
 
-// v1 라우트 설정
+// v1 base 라우트 설정\
 app.use("/v1", route);
 
 // Swagger UI 설정
 app.use("/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// morgan 서버 로그 설정
+app.use(
+  morgan("\x1b[7m:date[iso]\x1b[0m :method :url :status :res[content-length] - :response-time ms")
+);
 
 // 루트 디렉토리에 Swagger UI 문서 접근하기 위한 리다이렉션 설정
 app.get("/", (req, res) => {

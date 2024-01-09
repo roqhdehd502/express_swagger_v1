@@ -6,7 +6,7 @@ const router = express.Router();
 // 기능 라우터 설정
 const defaultRoutes = [
   {
-    path: "/post",
+    path: "",
     route: postRoute,
   },
 ];

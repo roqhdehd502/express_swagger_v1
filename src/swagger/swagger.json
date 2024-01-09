@@ -8,11 +8,19 @@
   "servers": [
     {
       "url": "http://localhost:3001/v1",
+      "description": "로컬계"
+    },
+    {
+      "url": "https://express-n0qh4jbcr-roqhdehd502.vercel.app/v1",
       "description": "테스트계"
+    },
+    {
+      "url": "https://express-n0qh4jbcr-roqhdehd502.vercel.app/v1",
+      "description": "운영계"
     }
   ],
   "paths": {
-    "/query/post": {
+    "/post/query": {
       "get": {
         "tags": [
           "post"
@@ -29,7 +37,7 @@
         }
       }
     },
-    "/query/post/{seq}": {
+    "/post/query/{seq}": {
       "get": {
         "tags": [
           "post"
@@ -59,7 +67,7 @@
         }
       }
     },
-    "/command/post": {
+    "/post/command": {
       "post": {
         "tags": [
           "post"
