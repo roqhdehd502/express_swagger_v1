@@ -12,7 +12,7 @@
         "summary": "모든 게시물 조회",
         "responses": {
           "200": {
-            "description": "성공",
+            "description": "success",
             "schema": {
               "type": "array",
               "items": {
@@ -21,7 +21,66 @@
             }
           },
           "500": {
-            "description": "서버 오류"
+            "description": "server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "새로운 게시물 생성",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "success"
+          },
+          "500": {
+            "description": "server error"
+          }
+        }
+      },
+      "put": {
+        "summary": "게시물 업데이트",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success"
+          },
+          "404": {
+            "description": "wrong url"
+          },
+          "500": {
+            "description": "server error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "게시물 삭제",
+        "responses": {
+          "204": {
+            "description": "success"
+          },
+          "404": {
+            "description": "wrong url"
+          },
+          "500": {
+            "description": "server error"
           }
         }
       }
@@ -31,6 +90,9 @@
     "Post": {
       "type": "object",
       "properties": {
+        "seq": {
+          "type": "number"
+        },
         "title": {
           "type": "string"
         },

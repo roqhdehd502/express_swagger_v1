@@ -1,9 +1,18 @@
 import express from "express";
-import { getAllPosts } from "../controllers/postController";
+import {
+  getAllPosts,
+  getPost,
+  createPost,
+  updatePost,
+  deletePost,
+} from "../controllers/postController";
 
 const router = express.Router();
 
 router.get("/posts", getAllPosts);
-// TODO: 다른 CRUD 라우트들도 유사한 방식으로 추가할 것
+router.get("/posts", getPost);
+router.post("/posts", createPost);
+router.put("/posts", updatePost);
+router.delete("/posts", deletePost);
 
 export default router;
