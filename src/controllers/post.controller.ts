@@ -1,7 +1,12 @@
 import { Request, Response } from "express";
-import Post, { IPost } from "../models/postModel";
+import Post, { IPost } from "@/models/post.model";
 
 export const getAllPosts = async (req: Request, res: Response): Promise<void> => {
+  /**
+   * #swagger.tags = ["post"]
+   * #swagger.summary = "게시글 목록"
+   * #swagger.description = "게시글 목록 불러오기"
+   */
   try {
     const posts: IPost[] = await Post.find();
     res.status(200).json(posts);
@@ -11,6 +16,11 @@ export const getAllPosts = async (req: Request, res: Response): Promise<void> =>
   }
 };
 export const getPost = async (req: Request, res: Response): Promise<void> => {
+  /**
+   * #swagger.tags = ["post"]
+   * #swagger.summary = "게시글 상세"
+   * #swagger.description = "게시글 단 건 불러오기"
+   */
   try {
     const seq = req.params.seq;
     const post: IPost | null = await Post.findById(seq);
@@ -25,6 +35,11 @@ export const getPost = async (req: Request, res: Response): Promise<void> => {
   }
 };
 export const createPost = async (req: Request, res: Response): Promise<void> => {
+  /**
+   * #swagger.tags = ["post"]
+   * #swagger.summary = "게시글 생성"
+   * #swagger.description = "게시글 생성"
+   */
   try {
     const { title, content } = req.body;
     const newPost: IPost = new Post({ title, content });
@@ -36,6 +51,11 @@ export const createPost = async (req: Request, res: Response): Promise<void> => 
   }
 };
 export const updatePost = async (req: Request, res: Response): Promise<void> => {
+  /**
+   * #swagger.tags = ["post"]
+   * #swagger.summary = "게시글 수정"
+   * #swagger.description = "게시글 수정"
+   */
   try {
     const seq = req.params.seq;
     const { title, content } = req.body;
@@ -51,17 +71,14 @@ export const updatePost = async (req: Request, res: Response): Promise<void> => 
     res.status(200).json(updatedPost);
   } catch (error: any) {
     console.error(error);
-    // switch (error.status) {
-    //   case 400:
-    //     res.status(400).send("bad request");
-    //     break;
-    //   case 500:
-    //     res.status(500).send(error);
-    //     break;
-    // }
   }
 };
 export const deletePost = async (req: Request, res: Response): Promise<void> => {
+  /**
+   * #swagger.tags = ["post"]
+   * #swagger.summary = "게시글 삭제"
+   * #swagger.description = "게시글 삭제"
+   */
   try {
     const seq = req.params.seq;
     const deletedPost = await Post.findByIdAndDelete(seq);

@@ -1,103 +1,202 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
-    "title": "게시판 API",
-    "description": "게시판 API 명세",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "title": "템플릿 API",
+    "description": "템플릿 API 명세"
   },
-  "basePath": "/api",
+  "servers": [
+    {
+      "url": "http://localhost:3001/v1",
+      "description": "테스트계"
+    }
+  ],
   "paths": {
-    "/posts": {
+    "/query/post": {
       "get": {
-        "summary": "모든 게시물 조회",
+        "tags": [
+          "post"
+        ],
+        "summary": "게시글 목록",
+        "description": "게시글 목록 불러오기",
         "responses": {
           "200": {
-            "description": "success",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Post"
-              }
-            }
+            "description": "OK"
           },
           "500": {
-            "description": "server error"
+            "description": "Internal Server Error"
           }
         }
-      },
+      }
+    },
+    "/query/post/{seq}": {
+      "get": {
+        "tags": [
+          "post"
+        ],
+        "summary": "게시글 상세",
+        "description": "게시글 단 건 불러오기",
+        "parameters": [
+          {
+            "name": "seq",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/command/post": {
       "post": {
-        "summary": "새로운 게시물 생성",
+        "tags": [
+          "post"
+        ],
+        "summary": "게시글 생성",
+        "description": "게시글 생성",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/definitions/Post"
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "example": "any"
+                  },
+                  "content": {
+                    "example": "any"
+                  }
+                }
               }
             }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "success"
-          },
-          "500": {
-            "description": "server error"
           }
         }
       },
       "put": {
-        "summary": "게시물 업데이트",
+        "tags": [
+          "post"
+        ],
+        "summary": "게시글 수정",
+        "description": "게시글 수정",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/definitions/Post"
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "example": "any"
+                  },
+                  "content": {
+                    "example": "any"
+                  }
+                }
               }
             }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "success"
-          },
-          "404": {
-            "description": "wrong url"
-          },
-          "500": {
-            "description": "server error"
           }
         }
       },
       "delete": {
-        "summary": "게시물 삭제",
+        "tags": [
+          "post"
+        ],
+        "summary": "게시글 삭제",
+        "description": "게시글 삭제",
         "responses": {
           "204": {
-            "description": "success"
+            "description": "No Content"
           },
           "404": {
-            "description": "wrong url"
+            "description": "Not Found"
           },
           "500": {
-            "description": "server error"
+            "description": "Internal Server Error"
           }
         }
       }
     }
   },
-  "definitions": {
-    "Post": {
-      "type": "object",
-      "properties": {
-        "seq": {
-          "type": "number"
-        },
-        "title": {
-          "type": "string"
-        },
-        "content": {
-          "type": "string"
+  "components": {
+    "schemas": {
+      "PostVO": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "object"
+          },
+          "properties": {
+            "type": "object",
+            "properties": {
+              "seq": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "integer"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "게시글 번호"
+                  }
+                }
+              },
+              "title": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "게시글 제목"
+                  }
+                }
+              },
+              "content": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "string"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "게시글 내용"
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
