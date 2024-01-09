@@ -30,6 +30,11 @@ app.use("/api", postRoutes);
 // Swagger UI 설정
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+// 루트 디렉토리에 API 문서 접근하기 위한 리디렉션 설정
+app.get("/", (req, res) => {
+  res.redirect("/api-docs");
+});
+
 // 서버 실행
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
