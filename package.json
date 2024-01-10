@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "gen-swagger": "node ./src/swagger/index.ts",
     "dev": "nodemon -r ts-node -r tsconfig-paths/register src/app.ts",
-    "build": "tsc"
+    "copy-files": "cp -r src/public/ dist/public/ && cp -r src/views/ dist/views/",
+    "build": "tsc && npm run copy-files"
   },
   "author": "MinwooNA",
   "license": "ISC",
