@@ -13,6 +13,7 @@ Express.js, Typescript, Swagger, MongoDB 등이 적용되어 있습니다.
     "cors": "^2.8.5",                               | CORS 처리 라이브러리
     "dotenv": "^16.3.1",                            | env 환경 변수 적용 라이브러리
     "express": "^4.18.2",                           | express.js
+    "joi": "^17.11.0",                              | 검증 확인 라이브러리
     "mongoose": "^8.0.3",                           | mongo db ORM 라이브러리
     "morgan": "^1.10.0",                            | 서버 로그 라이브러리
     "swagger-autogen": "^2.23.7",                   | swagger 자동 변환 라이브러리
@@ -81,9 +82,11 @@ npm run dev
 
 ```
 ├── src                             | src 디렉토리
-│   ├── controller                  | mongo DB 컨트롤러 디렉토리
+│   ├── config                      | 설정 디렉토리
+│   ├── controllers                 | mongo DB 컨트롤러 디렉토리
+│   ├── definitions                 | swagger definitions 스키마 설정 디렉토리
 │   ├── models                      | mongo DB 모델 디렉토리
-│   ├── routes                      | express.js 라우팅 디렉토리 (v1)
+│   ├── routes/v1                   | express.js 라우팅 디렉토리 (v1)
 │   ├── swagger                     | swagger 관련 자동화 파일 및 json 문서 디렉토리
 │   └── app.ts                      | express.js 메인 실행 파일
 ├── .env.example                    | 환경변수 예제 파일
@@ -92,6 +95,7 @@ npm run dev
 ├── package.json                    | package.json
 ├── README.md
 ├── tsconfig.json                   | 타입스크립트 설정 파일
+├── vercel.json                     | vercel 배포 설정 파일 (필요 없을시 삭제)
 └── xss-clean.d.ts                  | xss-clean 라이브러리 타입스크립트 설정 파일
 ```
 
@@ -149,7 +153,7 @@ defaultRoutes.forEach((route) => {
 export default router;
 ```
 
-### swagger 자동변환 적용
+### swagger autogen 자동변환 적용
 
 swagger 자동변환을 적용하기 위해 swagger/index.ts 파일 내에 다음과 같이 route 경로를 추가합니다.
 
@@ -159,7 +163,8 @@ const swaggerDefinition = require("./swaggerDef.ts");
 
 const outputFile = "./swagger.json";
 // path 파라미터에 해당 기능 routes 직접 지정
-const routes = ["../routes/v1/post.route.ts"];
+const routes = ["../routes/v1/*.ts"];
+// const routes = ["../routes/v1/post.route.ts"];
 
 swaggerAutogen(outputFile, routes, swaggerDefinition);
 ```
@@ -177,13 +182,10 @@ swagger-autogen 라이브러리는 작성한 route 및 controller의 로직을 �
 기본적인 설정 로직은 아래의 swaggerDef.ts와 같습니다.
 
 ```ts
-const dotenv = require("dotenv");
 const { version } = require("../../package.json");
+const config = require("../config/config.ts");
+const definitions = require("../definitions/index.ts");
 
-// dotenv 환경변수 설정
-dotenv.config();
-
-const { PORT } = process.env;
 const swaggerDef = {
   info: {
     version: version,
@@ -192,40 +194,99 @@ const swaggerDef = {
   },
   servers: [
     {
-      url: `http://localhost:${PORT}/v1`,
-      description: "로컬계",
-    },
-    {
-      url: "https://express-n0qh4jbcr-roqhdehd502.vercel.app/v1",
-      description: "테스트계",
-    },
-    {
-      url: "https://express-n0qh4jbcr-roqhdehd502.vercel.app/v1",
-      description: "운영계",
+      url: `http://localhost:${config.port}/v1`,
     },
   ],
   definitions: {
-    PostVO: {
-      type: "object",
-      properties: {
-        seq: {
-          type: "integer",
-          description: "게시글 번호",
-        },
-        title: {
-          type: "string",
-          description: "게시글 제목",
-        },
-        content: {
-          type: "string",
-          description: "게시글 내용",
-        },
-      },
-    },
+    ...definitions,
   },
 };
 
 module.exports = swaggerDef;
 ```
 
-tags와 기타 자세한 사용법은 [swagger-autogen](https://swagger-autogen.github.io/docs) 문서를 참고하세요.
+### swagger definitions 설정
+
+api 열람 확인시 필요한 스키마 정보를 지정하기 위해 definitions/\* 경로 내에 다음과 같이 definitions을 지정합니다.
+
+```ts
+module.exports = {
+  PostVO: {
+    properties: {
+      seq: {
+        type: "integer",
+        description: "게시글 번호",
+      },
+      title: {
+        type: "string",
+        description: "게시글 제목",
+      },
+      content: {
+        type: "string",
+        description: "게시글 내용",
+      },
+    },
+  },
+  CreatePostVO: {
+    properties: {
+      title: {
+        type: "string",
+        description: "게시글 제목",
+      },
+      content: {
+        type: "string",
+        description: "게시글 내용",
+      },
+    },
+  },
+  UpdatePostVO: {
+    properties: {
+      seq: {
+        type: "integer",
+        description: "게시글 번호",
+      },
+      title: {
+        type: "string",
+        description: "게시글 제목",
+      },
+      content: {
+        type: "string",
+        description: "게시글 내용",
+      },
+    },
+  },
+};
+```
+
+이 후 definitions/index.ts에서 작성한 definitions를 적용합니다.
+
+```ts
+const postDefinitions = require("./post.definition.ts");
+
+module.exports = {
+  ...postDefinitions,
+};
+```
+
+### swagger 세부 설정
+
+tags, summary, description 설정은 controller 파일에 다음과 같이 주석으로 지정합니다.
+
+```ts
+export const getAllPosts = async (req: Request, res: Response): Promise<void> => {
+  /**
+   * #swagger.tags = ["post"]
+   * #swagger.summary = "게시글 목록"
+   * #swagger.description = "게시글 목록 데이터 불러오기"
+   */
+  try {
+    const posts: IPost[] = await Post.find();
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+  }
+};
+```
+
+기타 자세한 사용법은 [swagger-autogen](https://swagger-autogen.github.io/docs) 문서를 참고하세요.

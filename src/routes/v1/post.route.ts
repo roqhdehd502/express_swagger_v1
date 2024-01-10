@@ -10,7 +10,7 @@ import {
 const router = express.Router();
 
 router.get("/post/query", getAllPosts);
-router.get("/post/query/:seq", getPost);
+router.get("/post/query/detail", getPost);
 router.post("/post/command", createPost);
 router.put("/post/command", updatePost);
 router.delete("/post/command", deletePost);

@@ -7,16 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3001/v1",
-      "description": "로컬계"
-    },
-    {
-      "url": "https://express-n0qh4jbcr-roqhdehd502.vercel.app/v1",
-      "description": "테스트계"
-    },
-    {
-      "url": "https://express-n0qh4jbcr-roqhdehd502.vercel.app/v1",
-      "description": "운영계"
+      "url": "http://localhost:4000/v1"
     }
   ],
   "paths": {
@@ -26,18 +17,30 @@
           "post"
         ],
         "summary": "게시글 목록",
-        "description": "게시글 목록 불러오기",
+        "description": "게시글 목록 데이터 불러오기",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "성공시 데이터 반환",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostVO"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostVO"
+                }
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "내부 에러"
           }
         }
       }
     },
-    "/post/query/{seq}": {
+    "/post/query/detail": {
       "get": {
         "tags": [
           "post"
@@ -47,22 +50,34 @@
         "parameters": [
           {
             "name": "seq",
-            "in": "path",
-            "required": true,
+            "description": "게시글 번호",
+            "in": "query",
             "schema": {
-              "type": "string"
+              "type": "number"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "성공시 데이터 반환",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostVO"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostVO"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "조회하는 데이터가 없음"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "내부 에러"
           }
         }
       }
@@ -72,29 +87,22 @@
         "tags": [
           "post"
         ],
-        "summary": "게시글 생성",
-        "description": "게시글 생성",
+        "summary": "게시글 작성",
+        "description": "게시글 생성하기",
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "작성 성공"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "내부 에러"
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "example": "any"
-                  },
-                  "content": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/CreatePostVO"
               }
             }
           }
@@ -105,28 +113,24 @@
           "post"
         ],
         "summary": "게시글 수정",
-        "description": "게시글 수정",
+        "description": "게시글 업데이트하기",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "수정 성공"
           },
           "404": {
-            "description": "Not Found"
+            "description": "수정할 참조 데이터가 없음"
+          },
+          "500": {
+            "description": "내부 에러"
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "example": "any"
-                  },
-                  "content": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/UpdatePostVO"
               }
             }
           }
@@ -137,13 +141,23 @@
           "post"
         ],
         "summary": "게시글 삭제",
-        "description": "게시글 삭제",
+        "description": "게시글 삭제하기",
+        "parameters": [
+          {
+            "name": "seq",
+            "description": "게시글 번호",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
         "responses": {
           "204": {
-            "description": "No Content"
+            "description": "삭제 성공"
           },
           "404": {
-            "description": "Not Found"
+            "description": "삭제할 참조 데이터가 없음"
           },
           "500": {
             "description": "Internal Server Error"
@@ -157,54 +171,57 @@
       "PostVO": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string",
-            "example": "object"
+          "seq": {
+            "type": "number",
+            "example": 0
           },
-          "properties": {
-            "type": "object",
-            "properties": {
-              "seq": {
-                "type": "object",
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "example": "integer"
-                  },
-                  "description": {
-                    "type": "string",
-                    "example": "게시글 번호"
-                  }
-                }
-              },
-              "title": {
-                "type": "object",
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "example": "string"
-                  },
-                  "description": {
-                    "type": "string",
-                    "example": "게시글 제목"
-                  }
-                }
-              },
-              "content": {
-                "type": "object",
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "example": "string"
-                  },
-                  "description": {
-                    "type": "string",
-                    "example": "게시글 내용"
-                  }
-                }
-              }
-            }
+          "title": {
+            "type": "string",
+            "example": "제목"
+          },
+          "content": {
+            "type": "string",
+            "example": "내용"
           }
+        },
+        "xml": {
+          "name": "PostVO"
+        }
+      },
+      "CreatePostVO": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "제목"
+          },
+          "content": {
+            "type": "string",
+            "example": "내용"
+          }
+        },
+        "xml": {
+          "name": "CreatePostVO"
+        }
+      },
+      "UpdatePostVO": {
+        "type": "object",
+        "properties": {
+          "seq": {
+            "type": "number",
+            "example": 0
+          },
+          "title": {
+            "type": "string",
+            "example": "제목"
+          },
+          "content": {
+            "type": "string",
+            "example": "내용"
+          }
+        },
+        "xml": {
+          "name": "UpdatePostVO"
         }
       }
     }

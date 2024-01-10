@@ -1,10 +1,7 @@
-const dotenv = require("dotenv");
 const { version } = require("../../package.json");
+const config = require("../config/config.ts");
+const definitions = require("../definitions/index.ts");
 
-// dotenv 환경변수 설정
-dotenv.config();
-
-const { PORT } = process.env;
 const swaggerDef = {
   info: {
     version: version,
@@ -13,36 +10,11 @@ const swaggerDef = {
   },
   servers: [
     {
-      url: `http://localhost:${PORT}/v1`,
-      description: "로컬계",
-    },
-    {
-      url: "https://express-n0qh4jbcr-roqhdehd502.vercel.app/v1",
-      description: "테스트계",
-    },
-    {
-      url: "https://express-n0qh4jbcr-roqhdehd502.vercel.app/v1",
-      description: "운영계",
+      url: `http://localhost:${config.port}/v1`,
     },
   ],
   definitions: {
-    PostVO: {
-      type: "object",
-      properties: {
-        seq: {
-          type: "integer",
-          description: "게시글 번호",
-        },
-        title: {
-          type: "string",
-          description: "게시글 제목",
-        },
-        content: {
-          type: "string",
-          description: "게시글 내용",
-        },
-      },
-    },
+    ...definitions,
   },
 };
 
