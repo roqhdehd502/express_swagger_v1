@@ -3,6 +3,7 @@ node_modules
 
 # Module Cache
 /.cache
+/dist
 /build
 /public/build
 
@@ -11,7 +12,7 @@ yarn-error.log
 
 # Environment varibales
 .env*
-!.env*.example
+!.env*.sample
 
 # Code coverage
 coverage
