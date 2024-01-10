@@ -1,9 +1,20 @@
+# Dependencies
 node_modules
 
+# Module Cache
 /.cache
 /build
 /public/build
 
-.env
-.env.local
+# yarn error logs
+yarn-error.log
+
+# Environment varibales
+.env*
+!.env*.example
+
+# Code coverage
+coverage
+
+# ESLint Cache
 .eslintcache
