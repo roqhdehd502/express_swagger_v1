@@ -3,6 +3,45 @@
 Express 기반으로 제작된 API 템플릿 입니다.
 Express.js, Typescript, Swagger, MongoDB 등이 적용되어 있습니다.
 
+## 구성
+
+현재 템플릿에서는 다음과 같은 라이브러리가 적용되어 있습니다.
+
+```json
+"dependencies": {
+    "compression": "^1.7.4",                        | 데이터 압축 라이브러리
+    "cors": "^2.8.5",                               | CORS 처리 라이브러리
+    "dotenv": "^16.3.1",                            | env 환경 변수 적용 라이브러리
+    "express": "^4.18.2",                           | express.js
+    "mongoose": "^8.0.3",                           | mongo db ORM 라이브러리
+    "morgan": "^1.10.0",                            | 서버 로그 라이브러리
+    "swagger-autogen": "^2.23.7",                   | swagger 자동 변환 라이브러리
+    "swagger-cli": "^4.0.4",                        | swagger 로그 라이브러리
+    "swagger-jsdoc": "^6.2.8",                      | swagger jsdoc 문서처리 라이브러리
+    "swagger-ui-express": "^5.0.0",                 | swagger ui 라이브러리
+    "xss-clean": "^0.1.4"                           | xss 방지 라이브러리
+  },
+  "devDependencies": {
+    "@types/compression": "^1.7.5",                 | compression 타입스크립트 적용
+    "@types/cors": "^2.8.17",                       | cors 타입스크립트 적용
+    "@types/express": "^4.17.21",                   | express 타입스크립트 적용
+    "@types/morgan": "^1.9.9",                      | morgan 타입스크립트 적용
+    "@types/node": "^20.10.5",                      | node.js 타입스크립트 적용
+    "@types/swagger-jsdoc": "^6.0.4",               | swagger-jsdo 타입스크립트 적용
+    "@types/swagger-ui-express": "^4.1.6",          | swagger-ui-express 타입스크립트 적용
+    "@typescript-eslint/eslint-plugin": "^6.16.0",  | eslint 타입스크립트 적용
+    "@typescript-eslint/parser": "^6.16.0",
+    "eslint": "^8.56.0",                            | eslint
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.2",
+    "nodemon": "^3.0.2",                            | nodemon
+    "prettier": "^3.1.1",                           | prettier
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",                     | typescript config
+    "typescript": "^5.3.3"                          | typescript
+  }
+```
+
 ## 설치
 
 2023년 09월 11일, [Node 16버전](https://nodejs.org/en/blog/announcements/nodejs16-eol)의 지원이 중단(End-of-Life) 되었습니다.  
@@ -110,7 +149,7 @@ defaultRoutes.forEach((route) => {
 export default router;
 ```
 
-#### swagger 자동변환 적용
+### swagger 자동변환 적용
 
 swagger 자동변환을 적용하기 위해 swagger/index.ts 파일 내에 다음과 같이 route 경로를 추가합니다.
 

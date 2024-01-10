@@ -14,11 +14,11 @@ dotenv.config();
 
 // express 기본 app 설정
 const app = express();
-const { PORT, MONGO_URI } = process.env;
+const { PORT, MONGODB_URI } = process.env;
 
 // MongoDB 연결
 mongoose
-  .connect(`${MONGO_URI}`)
+  .connect(`${MONGODB_URI}`)
   .then(() => console.log("MongoDB connected"))
   .catch((error) => console.log(error));
 
