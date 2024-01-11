@@ -11,6 +11,7 @@ const swaggerDef = {
   servers: [
     {
       url: `http://localhost:${config.port}/v1`,
+      description: "로컬계",
     },
   ],
   definitions: {

@@ -9,38 +9,38 @@ Express.js, Typescript, Swagger, MongoDB 등이 적용되어 있습니다.
 
 ```json
 "dependencies": {
-    "compression": "^1.7.4",                        | 데이터 압축 라이브러리
-    "cors": "^2.8.5",                               | CORS 처리 라이브러리
-    "dotenv": "^16.3.1",                            | env 환경 변수 적용 라이브러리
-    "express": "^4.18.2",                           | express.js
-    "joi": "^17.11.0",                              | 검증 확인 라이브러리
-    "mongoose": "^8.0.3",                           | mongo db ORM 라이브러리
-    "morgan": "^1.10.0",                            | 서버 로그 라이브러리
-    "swagger-autogen": "^2.23.7",                   | swagger 자동 변환 라이브러리
-    "swagger-cli": "^4.0.4",                        | swagger 로그 라이브러리
-    "swagger-jsdoc": "^6.2.8",                      | swagger jsdoc 문서처리 라이브러리
-    "swagger-ui-express": "^5.0.0",                 | swagger ui 라이브러리
-    "xss-clean": "^0.1.4"                           | xss 방지 라이브러리
-  },
-  "devDependencies": {
-    "@types/compression": "^1.7.5",                 | compression 타입스크립트 적용
-    "@types/cors": "^2.8.17",                       | cors 타입스크립트 적용
-    "@types/express": "^4.17.21",                   | express 타입스크립트 적용
-    "@types/morgan": "^1.9.9",                      | morgan 타입스크립트 적용
-    "@types/node": "^20.10.5",                      | node.js 타입스크립트 적용
-    "@types/swagger-jsdoc": "^6.0.4",               | swagger-jsdo 타입스크립트 적용
-    "@types/swagger-ui-express": "^4.1.6",          | swagger-ui-express 타입스크립트 적용
-    "@typescript-eslint/eslint-plugin": "^6.16.0",  | eslint 타입스크립트 적용
-    "@typescript-eslint/parser": "^6.16.0",
-    "eslint": "^8.56.0",                            | eslint
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.1.2",
-    "nodemon": "^3.0.2",                            | nodemon
-    "prettier": "^3.1.1",                           | prettier
-    "ts-node": "^10.9.2",
-    "tsconfig-paths": "^4.2.0",                     | typescript config
-    "typescript": "^5.3.3"                          | typescript
-  }
+  "compression": "^1.7.4",                        | 데이터 압축 라이브러리
+  "cors": "^2.8.5",                               | CORS 처리 라이브러리
+  "dotenv": "^16.3.1",                            | env 환경 변수 적용 라이브러리
+  "express": "^4.18.2",                           | express.js
+  "joi": "^17.11.0",                              | 검증 확인 라이브러리
+  "mongoose": "^8.0.3",                           | mongo db ORM 라이브러리
+  "morgan": "^1.10.0",                            | 서버 로그 라이브러리
+  "swagger-autogen": "^2.23.7",                   | swagger 자동 변환 라이브러리
+  "swagger-cli": "^4.0.4",                        | swagger 로그 라이브러리
+  "swagger-jsdoc": "^6.2.8",                      | swagger jsdoc 문서처리
+  "swagger-ui-express": "^4.6.3",                 | swagger ui 라이브러리
+  "xss-clean": "^0.1.4"                           | xss 방지 라이브러리
+},
+"devDependencies": {
+  "@types/compression": "^1.7.5",                 | compression 타입스크립트 적용
+  "@types/cors": "^2.8.17",                       | cors 타입스크립트 적용
+  "@types/express": "^4.17.21",                   | express 타입스크립트 적용
+  "@types/morgan": "^1.9.9",                      | morgan 타입스크립트 적용
+  "@types/node": "^20.10.5",                      | node.js 타입스크립트 적용
+  "@types/swagger-jsdoc": "^6.0.4",               | swagger-jsdo 타입스크립트 적용
+  "@types/swagger-ui-express": "^4.1.6",          | swagger-ui-express
+  "@typescript-eslint/eslint-plugin": "^6.16.0",  | eslint 타입스크립트 적용
+  "@typescript-eslint/parser": "^6.16.0",
+  "eslint": "^8.56.0",                            | eslint
+  "eslint-config-prettier": "^9.1.0",
+  "eslint-plugin-prettier": "^5.1.2",
+  "nodemon": "^3.0.2",                            | nodemon
+  "prettier": "^3.1.1",                           | prettier
+  "ts-node": "^10.9.2",
+  "tsconfig-paths": "^4.2.0",                     | typescript config
+  "typescript": "^5.3.3"                          | typescript
+}
 ```
 
 ## 설치
@@ -81,17 +81,19 @@ npm run dev
 ## 구조
 
 ```
-├── src                             | src 디렉토리
+├── api                             | api 디렉토리
 │   ├── config                      | 설정 디렉토리
 │   ├── controllers                 | mongo DB 컨트롤러 디렉토리
 │   ├── definitions                 | swagger definitions 스키마 설정 디렉토리
 │   ├── models                      | mongo DB 모델 디렉토리
 │   ├── routes/v1                   | express.js 라우팅 디렉토리 (v1)
-│   ├── swagger                     | swagger 관련 자동화 파일 및 json 문서 디렉토리
+│   └── swagger                     | swagger 관련 자동화 파일 및 json 문서 디렉토리
 │   └── app.ts                      | express.js 메인 실행 파일
 ├── .env.example                    | 환경변수 예제 파일
 ├── .eslintrc.json                  | [eslint](https://eslint.org/) 설정 파일
 ├── .gitignore                      | git 커밋 무시 설정
+├── .prettierrc.json                | prettier 설정 파일
+├── index.ts                        | express.js 메인 실행 파일
 ├── package.json                    | package.json
 ├── README.md
 ├── tsconfig.json                   | 타입스크립트 설정 파일
@@ -116,12 +118,12 @@ import {
   createPost,
   updatePost,
   deletePost,
-} from "@/controllers/post.controller";
+} from "../../controllers/post.controller";
 
 const router = express.Router();
 
 router.get("/post/query", getAllPosts);
-router.get("/post/query/:seq", getPost);
+router.get("/post/query/detail", getPost);
 router.post("/post/command", createPost);
 router.put("/post/command", updatePost);
 router.delete("/post/command", deletePost);
@@ -195,6 +197,7 @@ const swaggerDef = {
   servers: [
     {
       url: `http://localhost:${config.port}/v1`,
+      description: "로컬계",
     },
   ],
   definitions: {
@@ -212,48 +215,18 @@ api 열람 확인시 필요한 스키마 정보를 지정하기 위해 definitio
 ```ts
 module.exports = {
   PostVO: {
-    properties: {
-      seq: {
-        type: "integer",
-        description: "게시글 번호",
-      },
-      title: {
-        type: "string",
-        description: "게시글 제목",
-      },
-      content: {
-        type: "string",
-        description: "게시글 내용",
-      },
-    },
+    seq: 0,
+    title: "제목",
+    content: "내용",
   },
   CreatePostVO: {
-    properties: {
-      title: {
-        type: "string",
-        description: "게시글 제목",
-      },
-      content: {
-        type: "string",
-        description: "게시글 내용",
-      },
-    },
+    title: "제목",
+    content: "내용",
   },
   UpdatePostVO: {
-    properties: {
-      seq: {
-        type: "integer",
-        description: "게시글 번호",
-      },
-      title: {
-        type: "string",
-        description: "게시글 제목",
-      },
-      content: {
-        type: "string",
-        description: "게시글 내용",
-      },
-    },
+    seq: 0,
+    title: "제목",
+    content: "내용",
   },
 };
 ```
@@ -278,6 +251,8 @@ export const getAllPosts = async (req: Request, res: Response): Promise<void> =>
    * #swagger.tags = ["post"]
    * #swagger.summary = "게시글 목록"
    * #swagger.description = "게시글 목록 데이터 불러오기"
+   * #swagger.responses[200] = { description: "성공시 데이터 반환", schema: { $ref: "#/definitions/PostVO" } }
+   * #swagger.responses[500] = { description: "내부 에러" }
    */
   try {
     const posts: IPost[] = await Post.find();

@@ -2,13 +2,11 @@
   "name": "express_swagger_v1",
   "version": "1.0.0",
   "description": "express_swagger_v1",
-  "main": "src/app.ts",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "gen-swagger": "node ./src/swagger/index.ts",
-    "dev": "nodemon -r ts-node -r tsconfig-paths/register src/app.ts",
-    "copy-files": "cp -r src/public/ dist/public/ && cp -r src/views/ dist/views/",
-    "build": "tsc && npm run copy-files"
+    "gen-swagger": "node ./api/swagger/index.ts",
+    "dev": "nodemon -r ts-node -r tsconfig-paths/register index.ts"
   },
   "author": "MinwooNA",
   "license": "ISC",
@@ -23,7 +21,7 @@
     "swagger-autogen": "^2.23.7",
     "swagger-cli": "^4.0.4",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.0",
+    "swagger-ui-express": "^4.6.3",
     "xss-clean": "^0.1.4"
   },
   "devDependencies": {

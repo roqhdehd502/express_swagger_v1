@@ -6,8 +6,8 @@ import mongoose from "mongoose";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import xss from "xss-clean";
-import route from "@/routes/v1";
-import * as swaggerDocument from "@/swagger/swagger.json";
+import route from "./api/routes/v1";
+import * as swaggerDocument from "./api/swagger/swagger.json";
 
 // dotenv 환경변수 설정
 dotenv.config();
@@ -36,11 +36,19 @@ app.use(compression());
 app.use(cors());
 app.options("*", cors());
 
-// v1 base 라우트 설정\
+// v1 base 라우트 설정
 app.use("/v1", route);
 
 // Swagger UI 설정
-app.use("/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(
+  "/v1/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, {
+    customCss:
+      ".swagger-ui .opblock .opblock-summary-path-description-wrapper { align-items: center; display: flex; flex-wrap: wrap; gap: 0 10px; padding: 0 10px; width: 100%; }",
+    customCssUrl: "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css",
+  })
+);
 
 // morgan 서버 로그 설정
 app.use(
