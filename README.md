@@ -13,6 +13,7 @@ Express.js, Typescript, Swagger, MongoDB 등이 적용되어 있습니다.
   "cors": "^2.8.5",                               | CORS 처리 라이브러리
   "dotenv": "^16.3.1",                            | env 환경 변수 적용 라이브러리
   "express": "^4.18.2",                           | express.js
+  "express-validator": "^7.0.1",                  | express 검증 확인 라이브러리
   "joi": "^17.11.0",                              | 검증 확인 라이브러리
   "mongoose": "^8.0.3",                           | mongo db ORM 라이브러리
   "morgan": "^1.10.0",                            | 서버 로그 라이브러리
@@ -82,15 +83,16 @@ npm run dev
 
 ```
 ├── api                             | api 디렉토리
+│   ├── components                  | swagger components 스키마 설정 디렉토리
 │   ├── config                      | 설정 디렉토리
 │   ├── controllers                 | mongo DB 컨트롤러 디렉토리
-│   ├── definitions                 | swagger definitions 스키마 설정 디렉토리
 │   ├── models                      | mongo DB 모델 디렉토리
 │   ├── routes/v1                   | express.js 라우팅 디렉토리 (v1)
-│   └── swagger                     | swagger 관련 자동화 파일 및 json 문서 디렉토리
-│   └── app.ts                      | express.js 메인 실행 파일
+│   ├── swagger                     | swagger 관련 자동화 파일 및 json 문서 디렉토리
+│   ├── utils                       | 공용 기능 디렉토리
+│   └── validators                  | 검증 디렉토리
 ├── .env.example                    | 환경변수 예제 파일
-├── .eslintrc.json                  | [eslint](https://eslint.org/) 설정 파일
+├── .eslintrc.json                  | eslint 설정 파일
 ├── .gitignore                      | git 커밋 무시 설정
 ├── .prettierrc.json                | prettier 설정 파일
 ├── index.ts                        | express.js 메인 실행 파일
@@ -200,19 +202,20 @@ const swaggerDef = {
       description: "로컬계",
     },
   ],
-  definitions: {
-    ...definitions,
+  components: {
+    ...components,
   },
 };
 
 module.exports = swaggerDef;
 ```
 
-### swagger definitions 설정
+### swagger components 설정
 
-api 열람 확인시 필요한 스키마 정보를 지정하기 위해 definitions/\* 경로 내에 다음과 같이 definitions을 지정합니다.
+api 열람 확인시 필요한 스키마 정보를 지정하기 위해 components/\* 경로 내에 다음과 같이 지정합니다.
 
 ```ts
+// post.schema.ts
 module.exports = {
   PostVO: {
     seq: 0,
@@ -220,28 +223,75 @@ module.exports = {
     content: "내용",
   },
   CreatePostVO: {
-    title: "제목",
-    content: "내용",
+    $title: "제목",
+    $content: "내용",
   },
   UpdatePostVO: {
-    seq: 0,
-    title: "제목",
-    content: "내용",
+    $seq: 0,
+    $title: "제목",
+    $content: "내용",
   },
 };
 ```
 
-이 후 definitions/index.ts에서 작성한 definitions를 적용합니다.
-
 ```ts
-const postDefinitions = require("./post.definition.ts");
-
+// post.example.ts
 module.exports = {
-  ...postDefinitions,
+  CreatePostVO: {
+    value: { title: "제목", content: "내용" },
+    summary: "작성할 게시글 객체",
+  },
+  UpdatePostVO: {
+    value: { seq: 0, title: "제목", content: "내용" },
+    summary: "수정할 게시글 객체",
+  },
 };
 ```
 
-### swagger 세부 설정
+이 후 components/index.ts에서 작성한 schemas와 examples를 적용합니다.
+
+```ts
+const postExamples = require("./post.example.ts");
+const postSchemas = require("./post.schema.ts");
+
+module.exports = {
+  schemas: {
+    ...postSchemas,
+  },
+  examples: {
+    ...postExamples,
+  },
+};
+```
+
+적용한 components는 swagger/swaggerDef.ts 파일에서 확인할 수 있습니다.
+
+```ts
+const { version } = require("../../package.json");
+const config = require("../config/config.ts");
+const components = require("../components/index.ts");
+
+const swaggerDef = {
+  info: {
+    version: version,
+    title: "템플릿 API",
+    description: "템플릿 API 명세",
+  },
+  servers: [
+    {
+      url: `http://localhost:${config.port}/v1`,
+      description: "로컬계",
+    },
+  ],
+  components: {
+    ...components,
+  },
+};
+
+module.exports = swaggerDef;
+```
+
+### swagger-autogen 세부 설정
 
 tags, summary, description 설정은 controller 파일에 다음과 같이 주석으로 지정합니다.
 
@@ -251,11 +301,25 @@ export const getAllPosts = async (req: Request, res: Response): Promise<void> =>
    * #swagger.tags = ["post"]
    * #swagger.summary = "게시글 목록"
    * #swagger.description = "게시글 목록 데이터 불러오기"
-   * #swagger.responses[200] = { description: "성공시 데이터 반환", schema: { $ref: "#/definitions/PostVO" } }
+   *
+   * #swagger.responses[200] = {
+            description: "성공시 데이터 반환",
+            content: {
+                "application/json": {
+                    schema: {
+                        type: "array",
+                        items: {
+                            $ref: "#/components/schemas/PostVO"
+                        }
+                    }
+                }           
+            }
+        } 
    * #swagger.responses[500] = { description: "내부 에러" }
    */
   try {
-    const posts: IPost[] = await Post.find();
+    const posts: IPost[] = await Post.find().select("-_id seq title content");
+
     res.status(200).json(posts);
   } catch (error) {
     console.error(error);
