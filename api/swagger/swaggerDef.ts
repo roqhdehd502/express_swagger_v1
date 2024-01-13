@@ -1,6 +1,6 @@
 const { version } = require("../../package.json");
 const config = require("../config/config.ts");
-const definitions = require("../definitions/index.ts");
+const components = require("../components/index.ts");
 
 const swaggerDef = {
   info: {
@@ -14,8 +14,8 @@ const swaggerDef = {
       description: "로컬계",
     },
   ],
-  definitions: {
-    ...definitions,
+  components: {
+    ...components,
   },
 };
 

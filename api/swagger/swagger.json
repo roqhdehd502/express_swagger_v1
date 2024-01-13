@@ -25,12 +25,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PostVO"
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/PostVO"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PostVO"
+                  }
                 }
               }
             }
@@ -41,7 +39,7 @@
         }
       }
     },
-    "/post/query/detail": {
+    "/post/query/{seq}": {
       "get": {
         "tags": [
           "post"
@@ -51,11 +49,12 @@
         "parameters": [
           {
             "name": "seq",
-            "description": "게시글 번호",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
-              "type": "number"
-            }
+              "type": "string"
+            },
+            "description": "게시글 번호"
           }
         ],
         "responses": {
@@ -74,8 +73,11 @@
               }
             }
           },
+          "400": {
+            "description": "올바르지 않은 파라미터"
+          },
           "404": {
-            "description": "조회하는 데이터가 없음"
+            "description": "조회되는 데이터가 없음"
           },
           "500": {
             "description": "내부 에러"
@@ -94,6 +96,9 @@
           "201": {
             "description": "작성 성공"
           },
+          "400": {
+            "description": "올바르지 않은 파라미터"
+          },
           "500": {
             "description": "내부 에러"
           }
@@ -104,6 +109,11 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreatePostVO"
+              },
+              "examples": {
+                "example": {
+                  "$ref": "#/components/examples/CreatePostVO"
+                }
               }
             }
           }
@@ -119,6 +129,9 @@
           "200": {
             "description": "수정 성공"
           },
+          "400": {
+            "description": "올바르지 않은 파라미터"
+          },
           "404": {
             "description": "수정할 참조 데이터가 없음"
           },
@@ -132,6 +145,11 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UpdatePostVO"
+              },
+              "examples": {
+                "example": {
+                  "$ref": "#/components/examples/UpdatePostVO"
+                }
               }
             }
           }
@@ -147,6 +165,7 @@
           {
             "name": "seq",
             "description": "게시글 번호",
+            "required": true,
             "in": "query",
             "schema": {
               "type": "number"
@@ -156,6 +175,9 @@
         "responses": {
           "204": {
             "description": "삭제 성공"
+          },
+          "400": {
+            "description": "올바르지 않은 파라미터"
           },
           "404": {
             "description": "삭제할 참조 데이터가 없음"
@@ -201,6 +223,10 @@
             "example": "내용"
           }
         },
+        "required": [
+          "title",
+          "content"
+        ],
         "xml": {
           "name": "CreatePostVO"
         }
@@ -221,9 +247,31 @@
             "example": "내용"
           }
         },
+        "required": [
+          "seq",
+          "title",
+          "content"
+        ],
         "xml": {
           "name": "UpdatePostVO"
         }
+      }
+    },
+    "examples": {
+      "CreatePostVO": {
+        "value": {
+          "title": "제목",
+          "content": "내용"
+        },
+        "summary": "작성할 게시글 객체"
+      },
+      "UpdatePostVO": {
+        "value": {
+          "seq": 0,
+          "title": "제목",
+          "content": "내용"
+        },
+        "summary": "수정할 게시글 객체"
       }
     }
   }

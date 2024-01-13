@@ -7,12 +7,14 @@ export interface IPost extends Document {
 }
 
 const PostSchema: Schema = new Schema({
+  _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
+  seq: { type: Number, required: false, default: 0 },
   title: { type: String, required: true },
   content: { type: String, required: true },
 });
 
 PostSchema.statics.getNextSeq = async function (): Promise<number> {
-  const seq = await this.findOne({}, {}, { sort: { _id: -1 } })
+  const seq = await this.findOne({}, {}, { sort: { seq: -1 } })
     .select("seq")
     .lean();
   return seq ? seq.seq + 1 : 1;
@@ -25,7 +27,6 @@ PostSchema.pre<IPost>("save", async function (next) {
       this.seq = nextSeq;
       next();
     } catch (error) {
-      // next(error);
       console.log(error);
     }
   } else {

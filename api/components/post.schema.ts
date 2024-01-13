@@ -5,12 +5,12 @@ module.exports = {
     content: "내용",
   },
   CreatePostVO: {
-    title: "제목",
-    content: "내용",
+    $title: "제목",
+    $content: "내용",
   },
   UpdatePostVO: {
-    seq: 0,
-    title: "제목",
-    content: "내용",
+    $seq: 0,
+    $title: "제목",
+    $content: "내용",
   },
 };
