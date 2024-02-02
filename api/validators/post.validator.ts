@@ -1,33 +1,27 @@
 import { body, param, query } from "express-validator";
-import { isNumericString } from "../utils/regex";
 
-export const createPostValidator = [
+export const getPostListValidator = [
+  query("sort")
+    .optional()
+    .equals("desc")
+    .withMessage("sort is invalid")
+    .equals("asc")
+    .withMessage("sort is invalid"),
+  query("limit").optional().isNumeric().withMessage("limit is invalid"),
+  query("page").optional().isNumeric().withMessage("page is invalid"),
+];
+
+export const getPostValidator = [param("_id").notEmpty().withMessage("_id is required")];
+
+export const postPostValidator = [
   body("title").notEmpty().withMessage("title is required"),
   body("content").notEmpty().withMessage("content is required"),
 ];
 
-export const updatePostValidator = [
-  body("seq")
-    .notEmpty()
-    .withMessage("seq is required")
-    .isNumeric()
-    .withMessage("seq must be a number"),
+export const putPostValidator = [
+  param("_id").notEmpty().withMessage("_id is required"),
   body("title").notEmpty().withMessage("title is required"),
   body("content").notEmpty().withMessage("content is required"),
 ];
 
-export const getPostValidator = [
-  param("seq")
-    .notEmpty()
-    .withMessage("seq is required")
-    .custom(isNumericString)
-    .withMessage("seq must be a numeric string"),
-];
-
-export const deletePostValidator = [
-  query("seq")
-    .notEmpty()
-    .withMessage("seq is required")
-    .isNumeric()
-    .withMessage("seq must be a number"),
-];
+export const deletePostValidator = [param("_id").notEmpty().withMessage("_id is required")];

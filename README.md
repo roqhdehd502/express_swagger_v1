@@ -9,14 +9,23 @@ Express.js, Typescript, Swagger, MongoDB 등이 적용되어 있습니다.
 
 ```json
 "dependencies": {
+  "axios": "^1.6.5",
   "compression": "^1.7.4",                        | 데이터 압축 라이브러리
   "cors": "^2.8.5",                               | CORS 처리 라이브러리
+  "dayjs": "^1.11.10",                            | day.js 날짜 처리 라이브러리
   "dotenv": "^16.3.1",                            | env 환경 변수 적용 라이브러리
   "express": "^4.18.2",                           | express.js
+  "express-rate-limit": "^7.1.5",                 | express.js api call 제한 라이브러리
   "express-validator": "^7.0.1",                  | express 검증 확인 라이브러리
+  "form-data": "^4.0.0",                          | form 데이터 라이브러리
   "joi": "^17.11.0",                              | 검증 확인 라이브러리
+  "jsonwebtoken": "^9.0.2",                       | jwt 라이브러리
   "mongoose": "^8.0.3",                           | mongo db ORM 라이브러리
+  "mongoose-autopopulate": "^1.1.0",              | mongoose populate 자동화 라이브러리
   "morgan": "^1.10.0",                            | 서버 로그 라이브러리
+  "multiparty": "^4.2.3",                         | multiparty 라이브러리
+  "node-cron": "^3.0.3",                          | cron 스케쥴링 라이브러리
+  "request-ip": "^3.3.0",                         | 요청자 IP 확인 라이브러리
   "swagger-autogen": "^2.23.7",                   | swagger 자동 변환 라이브러리
   "swagger-cli": "^4.0.4",                        | swagger 로그 라이브러리
   "swagger-jsdoc": "^6.2.8",                      | swagger jsdoc 문서처리
@@ -27,8 +36,12 @@ Express.js, Typescript, Swagger, MongoDB 등이 적용되어 있습니다.
   "@types/compression": "^1.7.5",                 | compression 타입스크립트 적용
   "@types/cors": "^2.8.17",                       | cors 타입스크립트 적용
   "@types/express": "^4.17.21",                   | express 타입스크립트 적용
+  "@types/jsonwebtoken": "^9.0.5",                | jsonwebtoken 타입스크립트 적용
   "@types/morgan": "^1.9.9",                      | morgan 타입스크립트 적용
+  "@types/multiparty": "^0.0.36",                 | multiparty 타입스크립트 적용
   "@types/node": "^20.10.5",                      | node.js 타입스크립트 적용
+  "@types/node-cron": "^3.0.11",                  | node-cron 타입스크립트 적용
+  "@types/request-ip": "^0.0.41",                 | request-ip 타입스크립트 적용
   "@types/swagger-jsdoc": "^6.0.4",               | swagger-jsdo 타입스크립트 적용
   "@types/swagger-ui-express": "^4.1.6",          | swagger-ui-express
   "@typescript-eslint/eslint-plugin": "^6.16.0",  | eslint 타입스크립트 적용
@@ -85,7 +98,10 @@ npm run dev
 ├── api                             | api 디렉토리
 │   ├── components                  | swagger components 스키마 설정 디렉토리
 │   ├── config                      | 설정 디렉토리
+│   ├── const                       | 고정값 디렉토리
 │   ├── controllers                 | mongo DB 컨트롤러 디렉토리
+│   ├── errors                      | 에러 핸들링 디렉토리
+│   ├── middlewares                 | express.js 미들웨어 디렉토리
 │   ├── models                      | mongo DB 모델 디렉토리
 │   ├── routes/v1                   | express.js 라우팅 디렉토리 (v1)
 │   ├── swagger                     | swagger 관련 자동화 파일 및 json 문서 디렉토리

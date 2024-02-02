@@ -1,24 +1,25 @@
 import express from "express";
 import {
-  getAllPosts,
+  getPostList,
   getPost,
-  createPost,
-  updatePost,
+  postPost,
+  putPost,
   deletePost,
 } from "../../controllers/post.controller";
 import {
-  createPostValidator,
-  updatePostValidator,
+  getPostListValidator,
   getPostValidator,
+  postPostValidator,
+  putPostValidator,
   deletePostValidator,
 } from "../../validators/post.validator";
 
 const router = express.Router();
 
-router.get("/post/query", getAllPosts);
-router.get("/post/query/:seq", getPostValidator, getPost);
-router.post("/post/command", createPostValidator, createPost);
-router.put("/post/command", updatePostValidator, updatePost);
-router.delete("/post/command", deletePostValidator, deletePost);
+router.get("/post", getPostListValidator, getPostList);
+router.get("/post/:_id", getPostValidator, getPost);
+router.post("/post", postPostValidator, postPost);
+router.put("/post/:_id", putPostValidator, putPost);
+router.delete("/post/:_id", deletePostValidator, deletePost);
 
 export default router;

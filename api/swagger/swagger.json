@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "title": "템플릿 API",
     "description": "템플릿 API 명세"
   },
@@ -12,13 +12,39 @@
     }
   ],
   "paths": {
-    "/post/query": {
+    "/post": {
       "get": {
         "tags": [
           "post"
         ],
         "summary": "게시글 목록",
         "description": "게시글 목록 데이터 불러오기",
+        "parameters": [
+          {
+            "name": "sort",
+            "description": "정렬 순서(desc, asc), 기본값은 desc",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "description": "불러올 공지사항 수, 기본값은 10",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "description": "불러올 페이지 넘버, 기본값은 1",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "성공시 데이터 반환",
@@ -33,13 +59,49 @@
               }
             }
           },
+          "400": {
+            "description": "올바르지 않은 파라미터"
+          },
           "500": {
             "description": "내부 에러"
           }
         }
+      },
+      "post": {
+        "tags": [
+          "post"
+        ],
+        "summary": "게시글 작성",
+        "description": "게시글 생성하기",
+        "responses": {
+          "201": {
+            "description": "작성 성공"
+          },
+          "400": {
+            "description": "올바르지 않은 파라미터"
+          },
+          "500": {
+            "description": "내부 에러"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostPostVO"
+              },
+              "examples": {
+                "example": {
+                  "$ref": "#/components/examples/PostPostVO"
+                }
+              }
+            }
+          }
+        }
       }
     },
-    "/post/query/{seq}": {
+    "/post/{_id}": {
       "get": {
         "tags": [
           "post"
@@ -48,13 +110,13 @@
         "description": "게시글 단 건 불러오기",
         "parameters": [
           {
-            "name": "seq",
+            "name": "_id",
             "in": "path",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "description": "게시글 번호"
+            "description": "게시글 고유 번호"
           }
         ],
         "responses": {
@@ -83,41 +145,6 @@
             "description": "내부 에러"
           }
         }
-      }
-    },
-    "/post/command": {
-      "post": {
-        "tags": [
-          "post"
-        ],
-        "summary": "게시글 작성",
-        "description": "게시글 생성하기",
-        "responses": {
-          "201": {
-            "description": "작성 성공"
-          },
-          "400": {
-            "description": "올바르지 않은 파라미터"
-          },
-          "500": {
-            "description": "내부 에러"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreatePostVO"
-              },
-              "examples": {
-                "example": {
-                  "$ref": "#/components/examples/CreatePostVO"
-                }
-              }
-            }
-          }
-        }
       },
       "put": {
         "tags": [
@@ -125,6 +152,17 @@
         ],
         "summary": "게시글 수정",
         "description": "게시글 업데이트하기",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "게시글 고유 번호"
+          }
+        ],
         "responses": {
           "200": {
             "description": "수정 성공"
@@ -144,11 +182,11 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdatePostVO"
+                "$ref": "#/components/schemas/PutPostVO"
               },
               "examples": {
                 "example": {
-                  "$ref": "#/components/examples/UpdatePostVO"
+                  "$ref": "#/components/examples/PutPostVO"
                 }
               }
             }
@@ -163,13 +201,13 @@
         "description": "게시글 삭제하기",
         "parameters": [
           {
-            "name": "seq",
-            "description": "게시글 번호",
+            "name": "_id",
+            "in": "path",
             "required": true,
-            "in": "query",
             "schema": {
-              "type": "number"
-            }
+              "type": "string"
+            },
+            "description": "게시글 고유 번호"
           }
         ],
         "responses": {
@@ -181,9 +219,6 @@
           },
           "404": {
             "description": "삭제할 참조 데이터가 없음"
-          },
-          "500": {
-            "description": "Internal Server Error"
           }
         }
       }
@@ -194,9 +229,9 @@
       "PostVO": {
         "type": "object",
         "properties": {
-          "seq": {
-            "type": "number",
-            "example": 0
+          "_id": {
+            "type": "string",
+            "example": "게시글 고유 ID"
           },
           "title": {
             "type": "string",
@@ -205,13 +240,21 @@
           "content": {
             "type": "string",
             "example": "내용"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "작성일"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "수정일"
           }
         },
         "xml": {
           "name": "PostVO"
         }
       },
-      "CreatePostVO": {
+      "PostPostVO": {
         "type": "object",
         "properties": {
           "title": {
@@ -228,16 +271,12 @@
           "content"
         ],
         "xml": {
-          "name": "CreatePostVO"
+          "name": "PostPostVO"
         }
       },
-      "UpdatePostVO": {
+      "PutPostVO": {
         "type": "object",
         "properties": {
-          "seq": {
-            "type": "number",
-            "example": 0
-          },
           "title": {
             "type": "string",
             "example": "제목"
@@ -248,26 +287,24 @@
           }
         },
         "required": [
-          "seq",
           "title",
           "content"
         ],
         "xml": {
-          "name": "UpdatePostVO"
+          "name": "PutPostVO"
         }
       }
     },
     "examples": {
-      "CreatePostVO": {
+      "PostPostVO": {
         "value": {
           "title": "제목",
           "content": "내용"
         },
         "summary": "작성할 게시글 객체"
       },
-      "UpdatePostVO": {
+      "PutPostVO": {
         "value": {
-          "seq": 0,
           "title": "제목",
           "content": "내용"
         },

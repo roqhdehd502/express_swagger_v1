@@ -1,15 +1,16 @@
 module.exports = {
   PostVO: {
-    seq: 0,
+    _id: "게시글 고유 ID",
     title: "제목",
     content: "내용",
+    createdAt: "작성일",
+    updatedAt: "수정일",
   },
-  CreatePostVO: {
+  PostPostVO: {
     $title: "제목",
     $content: "내용",
   },
-  UpdatePostVO: {
-    $seq: 0,
+  PutPostVO: {
     $title: "제목",
     $content: "내용",
   },
