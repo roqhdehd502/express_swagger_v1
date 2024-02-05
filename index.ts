@@ -8,6 +8,7 @@ import swaggerUi from "swagger-ui-express";
 import xss from "xss-clean";
 import route from "./api/routes/v1";
 import * as swaggerDocument from "./api/swagger/swagger.json";
+import { requestLimiter } from "./api/config/config";
 
 // dotenv 환경변수 설정
 dotenv.config();
@@ -28,6 +29,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // XSS 설정
 app.use(xss());
+
+// DDOS 방지 설정
+app.use(requestLimiter);
 
 // gzip compression 설정
 app.use(compression());

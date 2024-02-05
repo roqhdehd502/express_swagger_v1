@@ -1,6 +1,8 @@
-const dotenv = require("dotenv");
-const path = require("path");
-const Joi = require("joi");
+import dotenv from "dotenv";
+import path from "path";
+import Joi from "joi";
+import { Request, Response } from "express";
+import rateLimit from "express-rate-limit";
 
 dotenv.config({ path: path.join(__dirname, "../../.env") });
 
@@ -19,7 +21,17 @@ if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
 
-module.exports = {
-  // env: envVars.NODE_ENV,
-  port: envVars.PORT,
-};
+export const port = envVars.PORT;
+
+// 요청 횟수 제한
+export const requestLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1분
+  max: 720, // 요청 허용 횟수
+  handler(req: Request, res: Response) {
+    res.status(403).json({
+      code: 403,
+      error: "Server request count exceeded",
+      message: "분당 요청량이 초과되었습니다",
+    });
+  },
+});
